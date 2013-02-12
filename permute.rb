@@ -30,6 +30,7 @@ get "/:word" do
 			end
 		end
 	end
-	found_words.keys.join("\n")
+	# Reorder into length
+	found_words.keys.sort_by(&:length).join("\n")
 end
 
