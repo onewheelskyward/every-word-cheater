@@ -1,9 +1,9 @@
 require 'sinatra'
 require 'data_mapper'
-require 'dm-sqlite-adapter'
+require 'dm-postgres-adapter'
 
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, 'sqlite::memory:')
+DataMapper.setup(:default, 'postgres://skuiuqdyscbzex:q46Z6ACDkwG2pfJvqCGJqFGNTj@ec2-107-22-169-108.compute-1.amazonaws.com:5432/dfpp1m4vpbp1rc')
 
 class DictionaryWord
 	include DataMapper::Resource
