@@ -16,10 +16,10 @@ class PermuteTest < Test::Unit::TestCase
 		assert last_response.ok?
 		words = last_response.body.split /\n/
 		# We shouldn't have the four letter words.
-		refute words.include?("deer")
+		refute words.include?("deer"), "Deer was found in the results and has too few letters."
 		# But we should have 5,6 and 7.
-		assert words.include?("rebed")
-		assert words.include?("berate")
-		assert words.include?("betread")
+		assert words.include?("rebed"), "rebed was not found in the results."
+		assert words.include?("berate"), "berate was not found in the results."
+		assert words.include?("betread"), "betread was not found in the results."
 	end
 end
