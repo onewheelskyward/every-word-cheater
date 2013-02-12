@@ -14,6 +14,12 @@ class PermuteTest < Test::Unit::TestCase
 	def test_it_permutes
 		get '/abdeert'
 		assert last_response.ok?
-		assert_equal 'Hello World', last_response.body
+		words = last_response.body.split /\n/
+		# We shouldn't have the four letter words.
+		refute words.include?("deer")
+		# But we should have 5,6 and 7.
+		assert words.include?("rebed")
+		assert words.include?("berate")
+		assert words.include?("betread")
 	end
 end
