@@ -3,46 +3,21 @@ require 'data_mapper'
 require 'dm-postgres-adapter'
 
 DataMapper::Logger.new($stdout, :debug)
-DataMapper.setup(:default, 'postgres://skuiuqdyscbzex:q46Z6ACDkwG2pfJvqCGJqFGNTj@ec2-107-22-169-108.compute-1.amazonaws.com:5432/dfpp1m4vpbp1rc')
+DataMapper.setup(:default, 'postgres://localhost/everywordcheater')
 
-class DictionaryWord
-	include DataMapper::Resource
-
-	property :id, Serial
-	property :word, String
-
-	has n, :found_words
-end
-
-class FoundWord
-	include DataMapper::Resource
-
-	property :id, Serial
-	property :letters, String
-
-	belongs_to :dictionary_word
-end
-
-DataMapper.finalize
-DataMapper.auto_upgrade!
-
-File.open("words") do |file|
-	file.each do |line|
-		word = line.strip.downcase
-		if word.length >= 5 and word.length <= 7
-			DictionaryWord.create(:word => word)
-		end
-	end
-end
+require_relative 'models'
 
 before do
 	content_type 'text/plain'
 end
 
 get %r{/(\w{5,7})} do |letters|
+	puts "Letters: #{letters}"
 	found_words = FoundWord.all(:letters => letters)
 	if found_words.empty?
+		puts "Found words empty"
 		permutations = letters.chars.to_a.permutation.map(&:join)
+
 		permutations.each do |word|
 			for word_len in 5..word.length
 				word_segment = word[0..word_len-1]
@@ -52,13 +27,14 @@ get %r{/(\w{5,7})} do |letters|
 			end
 		end
 		found_words = FoundWord.all(:letters => letters)
+		permutations
 	end
 
 	returned_words = []
 	found_words.each do |m|
 		returned_words.push m.dictionary_word.word
 	end
-	# Reorder into length
+	#Reorder into length
 	returned_words.sort_by(&:length).join("\n")
 end
 

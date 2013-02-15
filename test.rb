@@ -1,8 +1,7 @@
+ENV['RACK_ENV'] = 'test'
 require_relative 'permute'
 require 'test/unit'
 require 'rack/test'
-
-ENV['RACK_ENV'] = 'test'
 
 class PermuteTest < Test::Unit::TestCase
 	include Rack::Test::Methods
