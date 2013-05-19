@@ -5,4 +5,5 @@ class Request
 	property :param, String
 
 	has n, :found_words
+	has n, :permutations
 end
